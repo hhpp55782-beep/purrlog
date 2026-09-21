@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { logger } from '@lark-apaas/client-toolkit/logger';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
 import { createCat, createPost, fetchCats, fetchQuota } from '@/api';
@@ -47,7 +48,7 @@ const Publish = () => {
   const submit = async () => {
     if (submitting) return;
     if (!imageUrl) {
-      window.alert('先选一张主子的照片吧');
+      toast.error('先选一张主子的照片吧');
       return;
     }
     setSubmitting(true);
@@ -61,7 +62,7 @@ const Publish = () => {
         });
       }
       if (!target) {
-        window.alert('先选一只猫，或者新建猫档案');
+        toast.error('先选一只猫，或者新建猫档案');
         setSubmitting(false);
         return;
       }
@@ -79,7 +80,7 @@ const Publish = () => {
       navigate('/');
     } catch (error) {
       logger.error('发布失败', error);
-      window.alert('发布失败了，再试一次');
+      toast.error('发布失败了，再试一次');
     } finally {
       setSubmitting(false);
     }
