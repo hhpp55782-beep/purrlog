@@ -25,7 +25,8 @@
     "type:check:server": "tsc --noEmit --project tsconfig.node.json",
     "lint": "node ./scripts/lint.js",
     "precommit": "node scripts/hooks/run-precommit.js",
-    "upgrade": "npx -y @lark-apaas/fullstack-cli sync --disable-gen-openapi"
+    "prepare": "chmod +x .githooks/pre-commit 2>/dev/null; git config core.hooksPath .githooks 2>/dev/null || true",
+    "postinstall": "fullstack-cli action-plugin init"
   },
   "dependencies": {
     "@lark-apaas/fullstack-nestjs-core": "^1.1.63",
