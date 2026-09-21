@@ -8,11 +8,13 @@ import { FILTERS, MOODS } from '@/constants';
 import { compressImage } from '@/utils/image';
 import type { CatDTO } from '@shared/api.interface';
 
+const EMPTY_CAT = { name: '', color: '', breed: '' };
+
 const Publish = () => {
   const navigate = useNavigate();
   const [cats, setCats] = useState<CatDTO[]>([]);
   const [catId, setCatId] = useState<string>('');
-  const [newCat, setNewCat] = useState<{ name: string; color: string; breed: string } | null>(null);
+  const [newCat, setNewCat] = useState<typeof EMPTY_CAT | null>(null);
   const [imageUrl, setImageUrl] = useState<string>('');
   const [mood, setMood] = useState<string>('');
   const [content, setContent] = useState<string>('');
@@ -51,16 +53,19 @@ const Publish = () => {
     }
     setSubmitting(true);
     try {
-      let target: CatDTO | undefined = cats.find((c) => c.id === catId);
-      if (!target && newCat?.name) {
+      // 填了新猫名字就以新建为准，否则用选中的那只已有猫
+      let target: CatDTO | undefined;
+      if (newCat && newCat.name.trim()) {
         target = await createCat({
-          name: newCat.name,
+          name: newCat.name.trim(),
           color: newCat.color || null,
           breed: newCat.breed || null,
         });
+      } else {
+        target = cats.find((c) => c.id === catId);
       }
       if (!target) {
-        toast.error('先选一只猫，或者新建猫档案');
+        toast.error(newCat ? '给新猫起个名字吧' : '先选一只猫，或者点「+ 新猫」');
         setSubmitting(false);
         return;
       }
@@ -111,8 +116,15 @@ const Publish = () => {
             ))}
             <button
               type="button"
-              onClick={() => setNewCat({ name: '', color: '', breed: '' })}
-              className="text-[13px] px-3.5 py-1.5 rounded-full border border-dashed border-[#E0CDBB] text-[#B39C8C]"
+              onClick={() => {
+                setNewCat(EMPTY_CAT);
+                setCatId('');
+              }}
+              className={`text-[13px] px-3.5 py-1.5 rounded-full border ${
+                newCat
+                  ? 'bg-[#E8913F] text-white border-[#E8913F]'
+                  : 'border-dashed border-[#E0CDBB] text-[#B39C8C]'
+              }`}
             >
               + 新猫
             </button>
@@ -123,14 +135,16 @@ const Publish = () => {
           <div className="mt-3 rounded-2xl bg-white p-4 space-y-3">
             <input
               value={newCat?.name ?? ''}
-              onChange={(e) => setNewCat({ ...(newCat ?? { color: '', breed: '' }), name: e.target.value })}
+              onChange={(e) =>
+                setNewCat({ ...(newCat ?? EMPTY_CAT), name: e.target.value })
+              }
               placeholder="猫的名字（必填）"
               className="w-full h-10 px-3 rounded-xl bg-[#FFFBF7] border border-[#F0E4DA] text-[14px] outline-none"
             />
             <input
               value={newCat?.breed ?? ''}
               onChange={(e) =>
-                setNewCat({ ...(newCat ?? { name: '', color: '' }), breed: e.target.value })
+                setNewCat({ ...(newCat ?? EMPTY_CAT), breed: e.target.value })
               }
               placeholder="品种（选填，如 中华田园猫）"
               className="w-full h-10 px-3 rounded-xl bg-[#FFFBF7] border border-[#F0E4DA] text-[14px] outline-none"
@@ -140,7 +154,7 @@ const Publish = () => {
                 <button
                   key={f}
                   type="button"
-                  onClick={() => setNewCat({ ...(newCat ?? { name: '', breed: '' }), color: f })}
+                  onClick={() => setNewCat({ ...(newCat ?? EMPTY_CAT), color: f })}
                   className={`text-[12px] px-3 py-1.5 rounded-full border ${
                     newCat?.color === f
                       ? 'bg-[#E8913F] text-white border-[#E8913F]'
