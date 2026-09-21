@@ -8,7 +8,6 @@ import type {
   CreateCatBody,
   CreatePostBody,
   PostDTO,
-  QuotaDTO,
 } from '@shared/api.interface';
 
 async function call<T>(config: AxiosRequestConfig): Promise<T> {
@@ -46,11 +45,6 @@ export async function fetchPost(id: string): Promise<PostDTO | null> {
 /** 我发布的帖子 */
 export async function fetchMyPosts(): Promise<PostDTO[]> {
   return call<PostDTO[]>({ url: '/api/purrlog/posts/mine', method: 'GET' });
-}
-
-/** 发布配额（回应了多少 / 还能不能发） */
-export async function fetchQuota(): Promise<QuotaDTO> {
-  return call<QuotaDTO>({ url: '/api/purrlog/quota', method: 'GET' });
 }
 
 /** 我的猫档案列表 */

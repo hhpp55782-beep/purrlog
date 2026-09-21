@@ -5,11 +5,6 @@
 养了两只猫（包子 7 岁白猫、小黑 1 岁黑猫），很想晒，但朋友圈、抖音、小红书都给不了「被看见」的感觉。
 于是有了「呼噜噜」——一个只属于猫的日常分享社区：晒照片、说心情，别人贴贴纸、写评论，所有数据实时同步到云端。
 
-## 核心机制：先回应，再发布
-
-社区里没有无限发布权。想发一条日常，得先认真回应 **3 只** 别人的猫。
-这个小小的门槛，是为了让每一张照片都能收到回声——而不是沉下去。
-
 ## 功能
 
 | 模块 | 说明 |
@@ -48,7 +43,6 @@ GET    /api/purrlog/posts?filter=&limit=&offset=   广场帖子流（公开）
 GET    /api/purrlog/posts/:id                      详情（公开）
 GET    /api/purrlog/posts/mine                     我发布的（公开）
 GET    /api/purrlog/posts/:id/comments             评论列表（公开）
-GET    /api/purrlog/quota                          发布额度（登录）
 GET    /api/purrlog/cats                           我的猫（登录）
 POST   /api/purrlog/cats                           新建猫档案（登录）
 POST   /api/purrlog/posts                          发布日常（登录）

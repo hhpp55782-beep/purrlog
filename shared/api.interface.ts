@@ -3,9 +3,6 @@
 /** 猫咪毛色（同时用于广场筛选） */
 export type CatColor = '橘猫' | '狸花' | '奶牛' | '纯白' | '纯黑' | '幼猫' | '三花' | '其他';
 
-/** 单次发布需要回应的帖子数（社区核心机制） */
-export const ECHO_QUOTA = 3;
-
 export interface CatDTO {
   id: string;
   name: string;
@@ -52,16 +49,6 @@ export interface PostDTO {
   myStickers: string[];
   /** 是否是当前登录者自己发布的 */
   isMine: boolean;
-}
-
-export interface QuotaDTO {
-  /** 已经完成的回应数 */
-  echoDone: number;
-  /** 已经发布的帖子数 */
-  published: number;
-  /** 发布下一帖还需要的回应数（0 表示可以直接发） */
-  needEcho: number;
-  canPublish: boolean;
 }
 
 export interface CreatePostBody {

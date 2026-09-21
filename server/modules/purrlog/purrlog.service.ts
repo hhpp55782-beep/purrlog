@@ -5,14 +5,12 @@ import type { SQL } from 'drizzle-orm';
 import type { PgColumn } from 'drizzle-orm/pg-core';
 
 import { cat, post, postComment, postReaction } from '@server/database/schema';
-import { ECHO_QUOTA } from '@shared/api.interface';
 import type {
   CatDTO,
   CommentDTO,
   CreateCatBody,
   CreatePostBody,
   PostDTO,
-  QuotaDTO,
   ReactionDTO,
 } from '@shared/api.interface';
 
@@ -184,24 +182,6 @@ export class PurrlogService {
         .filter((s): s is string => Boolean(s)),
       isMine: Boolean(viewerId) && r.ownerId === viewerId,
     }));
-  }
-
-  async getQuota(userId: string): Promise<QuotaDTO> {
-    const [echoRow] = await this.db
-      .select({ total: sql<number>`count(*)::int` })
-      .from(postReaction)
-      .where(sql`(${postReaction.createdBy}).user_id = ${userId}`);
-
-    const [postRow] = await this.db
-      .select({ total: sql<number>`count(*)::int` })
-      .from(post)
-      .where(sql`(${post.createdBy}).user_id = ${userId}`);
-
-    const echoDone = Number(echoRow?.total ?? 0);
-    const published = Number(postRow?.total ?? 0);
-    const needEcho = Math.max(0, (published + 1) * ECHO_QUOTA - echoDone);
-
-    return { echoDone, published, needEcho, canPublish: needEcho === 0 };
   }
 
   async createPost(userId: string, userName: string | undefined, body: CreatePostBody): Promise<PostDTO> {

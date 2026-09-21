@@ -3,14 +3,13 @@ import { logger } from '@lark-apaas/client-toolkit/logger';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
-import { createCat, createPost, fetchCats, fetchQuota } from '@/api';
+import { createCat, createPost, fetchCats } from '@/api';
 import { FILTERS, MOODS } from '@/constants';
 import { compressImage } from '@/utils/image';
-import type { CatDTO, QuotaDTO } from '@shared/api.interface';
+import type { CatDTO } from '@shared/api.interface';
 
 const Publish = () => {
   const navigate = useNavigate();
-  const [quota, setQuota] = useState<QuotaDTO | null>(null);
   const [cats, setCats] = useState<CatDTO[]>([]);
   const [catId, setCatId] = useState<string>('');
   const [newCat, setNewCat] = useState<{ name: string; color: string; breed: string } | null>(null);
@@ -21,8 +20,7 @@ const Publish = () => {
 
   const load = useCallback(async () => {
     try {
-      const [q, c] = await Promise.all([fetchQuota(), fetchCats()]);
-      setQuota(q);
+      const c = await fetchCats();
       setCats(c);
       if (c.length && !catId) setCatId(c[0].id);
     } catch (error) {
@@ -86,32 +84,9 @@ const Publish = () => {
     }
   };
 
-  const blocked = quota ? !quota.canPublish : false;
-
   return (
     <div className="px-4 pt-5 pb-6">
       <h1 className="text-[22px] font-bold">发布日常</h1>
-
-      <div className="mt-3 rounded-2xl bg-[#FFF0E0] px-4 py-3 text-[13px] text-[#A2601F]">
-        {quota ? (
-          blocked ? (
-            <>
-              已经回应 <b>{quota.echoDone}</b> 只猫，再回应 <b>{quota.needEcho}</b> 只就能发一条日常啦
-              <button
-                type="button"
-                onClick={() => navigate('/')}
-                className="block mt-2 text-[13px] underline"
-              >
-                去广场回应 →
-              </button>
-            </>
-          ) : (
-            <>发布额度已解锁，可以晒猫了 🎉</>
-          )
-        ) : (
-          '正在读取额度…'
-        )}
-      </div>
 
       <section className="mt-5">
         <h2 className="text-[14px] font-semibold mb-2">选一只猫</h2>
@@ -231,7 +206,7 @@ const Publish = () => {
       <button
         type="button"
         onClick={() => void submit()}
-        disabled={submitting || blocked}
+        disabled={submitting}
         className="mt-6 w-full h-12 rounded-full bg-[#E8913F] text-white font-semibold disabled:opacity-40"
       >
         {submitting ? '发布中…' : '发布日常'}

@@ -11,7 +11,6 @@ import type {
   CreatePostBody,
   CreateReactionBody,
   PostDTO,
-  QuotaDTO,
 } from '@shared/api.interface';
 
 @Controller('api/purrlog')
@@ -60,11 +59,6 @@ export class PurrlogController {
   }
 
   // ===== 需要登录 =====
-
-  @Get('quota')
-  async getQuota(@Req() req: Request): Promise<QuotaDTO> {
-    return this.purrlogService.getQuota(this.viewer(req));
-  }
 
   @Get('cats')
   async listMyCats(@Req() req: Request): Promise<CatDTO[]> {

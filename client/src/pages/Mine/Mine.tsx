@@ -2,25 +2,23 @@ import { useCallback, useEffect, useState } from 'react';
 import { logger } from '@lark-apaas/client-toolkit/logger';
 import { Link } from 'react-router-dom';
 
-import { fetchCats, fetchMyPosts, fetchQuota } from '@/api';
+import { fetchCats, fetchMyPosts } from '@/api';
 import PostCard from '@/components/PostCard';
 import ShareSheet from '@/components/ShareSheet';
 import { COLOR_DOT } from '@/constants';
 import { makeShareCard } from '@/utils/image';
-import type { CatDTO, PostDTO, QuotaDTO } from '@shared/api.interface';
+import type { CatDTO, PostDTO } from '@shared/api.interface';
 
 const Mine = () => {
   const [cats, setCats] = useState<CatDTO[]>([]);
   const [posts, setPosts] = useState<PostDTO[]>([]);
-  const [quota, setQuota] = useState<QuotaDTO | null>(null);
   const [cardUrl, setCardUrl] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
-      const [c, p, q] = await Promise.all([fetchCats(), fetchMyPosts(), fetchQuota()]);
+      const [c, p] = await Promise.all([fetchCats(), fetchMyPosts()]);
       setCats(c);
       setPosts(p);
-      setQuota(q);
     } catch (error) {
       logger.error('加载我的页面失败', error);
     }
@@ -40,7 +38,7 @@ const Mine = () => {
     <div className="px-4 pt-5 pb-6">
       <h1 className="text-[22px] font-bold">我的</h1>
 
-      <div className="mt-4 grid grid-cols-3 gap-3">
+      <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="bg-white rounded-2xl py-3 text-center">
           <p className="text-[20px] font-bold text-[#E8913F]">{posts.length}</p>
           <p className="text-[12px] text-[#B39C8C]">条日常</p>
@@ -48,10 +46,6 @@ const Mine = () => {
         <div className="bg-white rounded-2xl py-3 text-center">
           <p className="text-[20px] font-bold text-[#E8913F]">{echoTotal}</p>
           <p className="text-[12px] text-[#B39C8C]">收到回应</p>
-        </div>
-        <div className="bg-white rounded-2xl py-3 text-center">
-          <p className="text-[20px] font-bold text-[#E8913F]">{quota?.echoDone ?? 0}</p>
-          <p className="text-[12px] text-[#B39C8C]">我回应过</p>
         </div>
       </div>
 
