@@ -7,7 +7,6 @@ import { createCat, createPost, fetchCats } from '@/api';
 import { FILTERS, MOODS } from '@/constants';
 import { compressImage } from '@/utils/image';
 import type { CatDTO } from '@shared/api.interface';
-import { Image } from '@client/src/components/ui/image';
 
 const Publish = () => {
   const navigate = useNavigate();
@@ -160,7 +159,7 @@ const Publish = () => {
         <h2 className="text-[14px] font-semibold mb-2">今天的照片</h2>
         <label className="block rounded-2xl bg-white p-4 text-center cursor-pointer">
           {imageUrl ? (
-            <Image src={imageUrl} alt="待发布" className="w-full rounded-xl max-h-[280px] object-cover" />
+            <img src={imageUrl} alt="待发布" className="w-full rounded-xl max-h-[280px] object-cover" />
           ) : (
             <span className="text-[13px] text-[#B39C8C]">点这里选一张照片</span>
           )}
@@ -174,7 +173,10 @@ const Publish = () => {
       </section>
 
       <section className="mt-5">
-        <h2 className="text-[14px] font-semibold mb-2">此刻心情</h2>
+        <h2 className="text-[14px] font-semibold mb-2">
+          此刻心情
+          <span className="ml-1.5 text-[11px] font-normal text-[#C3B0A0]">选填，不选也能发</span>
+        </h2>
         <div className="flex flex-wrap gap-2">
           {MOODS.map((m) => (
             <button
@@ -194,12 +196,15 @@ const Publish = () => {
       </section>
 
       <section className="mt-5">
-        <h2 className="text-[14px] font-semibold mb-2">说点什么</h2>
+        <h2 className="text-[14px] font-semibold mb-2">
+          说点什么
+          <span className="ml-1.5 text-[11px] font-normal text-[#C3B0A0]">选填，可以不写</span>
+        </h2>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={3}
-          placeholder="它今天又干了什么好事？"
+          placeholder="它今天又干了什么好事？（留空也行，只发照片也没关系）"
           className="w-full px-3 py-2 rounded-2xl bg-white border border-[#F0E4DA] text-[14px] outline-none resize-none"
         />
       </section>
