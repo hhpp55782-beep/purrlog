@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+import { Image } from '@client/src/components/ui/image';
 
 interface Props {
   url: string;
@@ -16,7 +17,7 @@ const ShareSheet = ({ url, onClose }: Props) => {
           </button>
         </div>
         {url ? (
-          <img src={url} alt="分享卡片" className="w-full rounded-2xl" />
+          <Image src={url} alt="分享卡片" className="w-full rounded-2xl" />
         ) : (
           <p className="text-[13px] text-[#B39C8C]">卡片生成失败，请重试</p>
         )}

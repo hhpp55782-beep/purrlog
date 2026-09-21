@@ -9,6 +9,7 @@ import { logger } from '@lark-apaas/client-toolkit/logger';
 import { addComment, toggleReaction } from '@/api';
 import { COLOR_DOT, STICKERS } from '@/constants';
 import type { PostDTO } from '@shared/api.interface';
+import { Image } from '@client/src/components/ui/image';
 
 dayjs.extend(relativeTime);
 dayjs.locale('zh-cn');
@@ -66,7 +67,7 @@ const PostCard = ({ post, onChanged, onShare, compact }: Props) => {
   };
 
   return (
-    <article className="bg-white rounded-3xl p-4 mb-4 shadow-[0_4px_20px_rgba(180,150,120,0.10)]">
+    <article className="bg-white rounded-3xl p-4 mb-4 shadow-[0_4px_20px_rgba(180_150_120_0.10)]">
       <header className="flex items-center gap-2">
         <span
           className="w-2.5 h-2.5 rounded-full"
@@ -86,7 +87,7 @@ const PostCard = ({ post, onChanged, onShare, compact }: Props) => {
       </header>
 
       <Link to={`/post/${post.id}`} className="block mt-3">
-        <img
+        <Image
           src={post.imageUrl}
           alt={post.catName ?? '猫咪日常'}
           className="w-full rounded-2xl object-cover max-h-[420px] bg-[#F7EFE7]"

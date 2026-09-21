@@ -7,6 +7,7 @@ import { createCat, createPost, fetchCats } from '@/api';
 import { FILTERS, MOODS } from '@/constants';
 import { compressImage } from '@/utils/image';
 import type { CatDTO } from '@shared/api.interface';
+import { Image } from '@client/src/components/ui/image';
 
 const Publish = () => {
   const navigate = useNavigate();
@@ -159,7 +160,7 @@ const Publish = () => {
         <h2 className="text-[14px] font-semibold mb-2">今天的照片</h2>
         <label className="block rounded-2xl bg-white p-4 text-center cursor-pointer">
           {imageUrl ? (
-            <img src={imageUrl} alt="待发布" className="w-full rounded-xl max-h-[280px] object-cover" />
+            <Image src={imageUrl} alt="待发布" className="w-full rounded-xl max-h-[280px] object-cover" />
           ) : (
             <span className="text-[13px] text-[#B39C8C]">点这里选一张照片</span>
           )}
