@@ -1,10 +1,9 @@
-import { Bell, House, PawPrint, UserRound } from 'lucide-react';
+import { House, PawPrint, UserRound } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router-dom';
 
 const TABS = [
   { to: '/', label: '广场', icon: House },
   { to: '/publish', label: '发布', icon: PawPrint },
-  { to: '/echo', label: '回声', icon: Bell },
   { to: '/mine', label: '我的', icon: UserRound },
 ];
 

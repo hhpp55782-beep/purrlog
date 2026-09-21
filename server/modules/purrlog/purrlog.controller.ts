@@ -10,7 +10,6 @@ import type {
   CreateCommentBody,
   CreatePostBody,
   CreateReactionBody,
-  EchoItemDTO,
   PostDTO,
   QuotaDTO,
 } from '@shared/api.interface';
@@ -65,11 +64,6 @@ export class PurrlogController {
   @Get('quota')
   async getQuota(@Req() req: Request): Promise<QuotaDTO> {
     return this.purrlogService.getQuota(this.viewer(req));
-  }
-
-  @Get('echoes')
-  async listEchoes(@Req() req: Request): Promise<EchoItemDTO[]> {
-    return this.purrlogService.listEchoes(this.viewer(req));
   }
 
   @Get('cats')

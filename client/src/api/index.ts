@@ -7,7 +7,6 @@ import type {
   CommentDTO,
   CreateCatBody,
   CreatePostBody,
-  EchoItemDTO,
   PostDTO,
   QuotaDTO,
 } from '@shared/api.interface';
@@ -52,11 +51,6 @@ export async function fetchMyPosts(): Promise<PostDTO[]> {
 /** 发布配额（回应了多少 / 还能不能发） */
 export async function fetchQuota(): Promise<QuotaDTO> {
   return call<QuotaDTO>({ url: '/api/purrlog/quota', method: 'GET' });
-}
-
-/** 我收到的回声 */
-export async function fetchEchoes(): Promise<EchoItemDTO[]> {
-  return call<EchoItemDTO[]>({ url: '/api/purrlog/echoes', method: 'GET' });
 }
 
 /** 我的猫档案列表 */

@@ -11,7 +11,6 @@ import type {
   CommentDTO,
   CreateCatBody,
   CreatePostBody,
-  EchoItemDTO,
   PostDTO,
   QuotaDTO,
   ReactionDTO,
@@ -353,77 +352,6 @@ export class PurrlogService {
       avatarUrl: created.avatarUrl,
       createdAt: created.createdAt.toISOString(),
     };
-  }
-
-  async listEchoes(userId: string): Promise<EchoItemDTO[]> {
-    const myPosts = await this.db
-      .select({ id: post.id, catName: post.catName, imageUrl: post.imageUrl })
-      .from(post)
-      .where(sql`(${post.createdBy}).user_id = ${userId}`);
-
-    if (!myPosts.length) return [];
-    const ids = myPosts.map((p) => p.id);
-    const meta = new Map(myPosts.map((p) => [p.id, p]));
-
-    const [reactionRows, commentRows] = await Promise.all([
-      this.db
-        .select({
-          id: postReaction.id,
-          postId: postReaction.postId,
-          sticker: postReaction.sticker,
-          actorName: postReaction.actorName,
-          createdAt: postReaction.createdAt,
-          ownerId: this.ownerExpr(postReaction.createdBy),
-        })
-        .from(postReaction)
-        .where(inArray(postReaction.postId, ids)),
-      this.db
-        .select({
-          id: postComment.id,
-          postId: postComment.postId,
-          content: postComment.content,
-          authorName: postComment.authorName,
-          createdAt: postComment.createdAt,
-          ownerId: this.ownerExpr(postComment.createdBy),
-        })
-        .from(postComment)
-        .where(inArray(postComment.postId, ids)),
-    ]);
-
-    const items: EchoItemDTO[] = [];
-    for (const r of reactionRows) {
-      if (r.ownerId === userId) continue;
-      const m = meta.get(r.postId);
-      items.push({
-        id: r.id,
-        postId: r.postId,
-        type: 'reaction',
-        sticker: r.sticker,
-        content: null,
-        actorName: r.actorName || ANONYMOUS,
-        createdAt: r.createdAt.toISOString(),
-        catName: m?.catName ?? null,
-        imageUrl: m?.imageUrl ?? null,
-      });
-    }
-    for (const c of commentRows) {
-      if (c.ownerId === userId) continue;
-      const m = meta.get(c.postId);
-      items.push({
-        id: c.id,
-        postId: c.postId,
-        type: 'comment',
-        sticker: null,
-        content: c.content,
-        actorName: c.authorName || ANONYMOUS,
-        createdAt: c.createdAt.toISOString(),
-        catName: m?.catName ?? null,
-        imageUrl: m?.imageUrl ?? null,
-      });
-    }
-
-    items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    return items;
   }
 
   async listMyPosts(userId: string, viewerId: string): Promise<PostDTO[]> {

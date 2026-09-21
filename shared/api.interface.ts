@@ -64,20 +64,6 @@ export interface QuotaDTO {
   canPublish: boolean;
 }
 
-export interface EchoItemDTO {
-  id: string;
-  postId: string;
-  type: 'reaction' | 'comment';
-  sticker: string | null;
-  content: string | null;
-  actorName: string | null;
-  createdAt: string;
-  /** 被回应的那只猫的名字 */
-  catName: string | null;
-  /** 被回应的那张照片（缩略用） */
-  imageUrl: string | null;
-}
-
 export interface CreatePostBody {
   catId: string | null;
   catName: string;

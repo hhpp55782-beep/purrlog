@@ -19,7 +19,6 @@
 | 评论 | 每条日常下可以说话，实时写入云端 |
 | 发布 | 选猫 / 上传照片（前端压到 760px JPEG）/ 选心情（面包瘫、飞机耳、踩奶…）/ 写配文 |
 | 猫档案 | 名字、品种、毛色、体重、生日、来历 |
-| 回声 | 别人对你家猫的所有回应，聚合成一条时间线 |
 | 我的 | 我的猫、我的日常、数据统计 |
 | 分享卡片 | Canvas 生成竖版卡片，带「丸子的无限进步」水印，手机长按保存 |
 
@@ -50,7 +49,6 @@ GET    /api/purrlog/posts/:id                      详情（公开）
 GET    /api/purrlog/posts/mine                     我发布的（公开）
 GET    /api/purrlog/posts/:id/comments             评论列表（公开）
 GET    /api/purrlog/quota                          发布额度（登录）
-GET    /api/purrlog/echoes                         我收到的回声（登录）
 GET    /api/purrlog/cats                           我的猫（登录）
 POST   /api/purrlog/cats                           新建猫档案（登录）
 POST   /api/purrlog/posts                          发布日常（登录）
